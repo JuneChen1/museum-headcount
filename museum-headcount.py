@@ -9,6 +9,7 @@ df = pd.read_csv(url)
 df = df.loc[df['民國年'] <= 109]
 annual = df.groupby('民國年')['人次'].sum()
 month = df.groupby('月份')['人次'].sum()
+city = df.groupby('縣市')['人次'].sum()
 
 plt.figure(figsize=(25, 12), dpi=300)
 plt.rcParams['font.sans-serif'] = 'Microsoft JhengHei'
@@ -31,5 +32,14 @@ for i in month.index:
     plt.text(i, month[i]-10000, month[i], ha='center')
   else:
     plt.text(i, month[i]+10000, month[i], ha='center')
+#3
+plt.subplot(2, 2, 3)
+plt.title('各縣市的總參觀人次', fontsize=25)
+plt.bar(city.index, city.values, color='forestgreen')
+for i in city.index:
+  if city[i] >= 600000:
+    plt.text(i, city[i]-40000, int(city[i]), ha='center', va='top', rotation='vertical', color='w')
+  else:
+    plt.text(i, city[i]+20000, int(city[i]), ha='center', rotation='vertical')
 
 plt.savefig('地方文物館參觀人數統計.png')

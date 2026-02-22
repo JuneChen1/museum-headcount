@@ -1,3 +1,4 @@
+# 107~109 地方文物館參觀人數統計
 # 資料來源：https://data.gov.tw/dataset/164265
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +11,10 @@ df = df.loc[df['民國年'] <= 109]
 annual = df.groupby('民國年')['人次'].sum()
 month = df.groupby('月份')['人次'].sum()
 city = df.groupby('縣市')['人次'].sum()
+sixSpecial = ['臺北市', '高雄市', '新北市', '臺中市', '臺南市', '桃園市']
+sum1 = city[sixSpecial].sum()
+sum2 = city.sum() - sum1
+lbl = ['六都', '非六都']
 
 plt.figure(figsize=(25, 12), dpi=300)
 plt.rcParams['font.sans-serif'] = 'Microsoft JhengHei'
@@ -41,5 +46,9 @@ for i in city.index:
     plt.text(i, city[i]-40000, int(city[i]), ha='center', va='top', rotation='vertical', color='w')
   else:
     plt.text(i, city[i]+20000, int(city[i]), ha='center', rotation='vertical')
+#4
+plt.subplot(2, 2, 4)
+plt.title('六都與非六都的參觀總人次比例', fontsize=25)
+plt.pie([sum1, sum2], labels=lbl, autopct='%.1f%%')
 
 plt.savefig('地方文物館參觀人數統計.png')
